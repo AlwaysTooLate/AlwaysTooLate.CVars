@@ -1,0 +1,14 @@
+{
+    "name": "AlwaysTooLate.CVars",
+    "references": [
+        "AlwaysTooLate.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
