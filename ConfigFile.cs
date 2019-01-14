@@ -5,10 +5,15 @@ using System;
 namespace AlwaysTooLate.CVars
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class ConfigClass : Attribute
+    public class ConfigFile : Attribute
     {
-        public ConfigClass(string name, bool serializable = false)
+        public ConfigFile(string name)
         {
         }
+    }
+
+    public class ConfigFile<TClass>
+    {
+        public static TClass Current { get; private set; }
     }
 }

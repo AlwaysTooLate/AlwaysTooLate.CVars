@@ -7,6 +7,6 @@ namespace AlwaysTooLate.CVars
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ConfigVariable : Attribute
     {
-        public ConfigVariable(string name, object defaultValue = null) { }
+        public ConfigVariable(string name, object defaultValue = null, ConfigAccess access = ConfigAccess.Any) { }
     }
 }
