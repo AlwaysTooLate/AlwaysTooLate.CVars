@@ -270,12 +270,13 @@ namespace AlwaysTooLate.CVars
 
         /// <summary>
         /// Gets variable by name.
+        /// If variable doesn't exists, this function returns null.
         /// </summary>
         /// <param name="name">The variable full name, eg.: cheats.fly</param>
         /// <returns>The variable wrapper class.</returns>
         public static ConfigVariable GetVariable(string name)
         {
-            return ConfigVariables[name];
+            return ConfigVariables.TryGetValue(name, out var variable) ? variable : null;
         }
 
         /// <summary>
