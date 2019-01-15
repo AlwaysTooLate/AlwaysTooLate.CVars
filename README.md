@@ -1,4 +1,4 @@
-# AlwaysTooLate.Core
+# AlwaysTooLate.CVars
 AlwaysTooLate Config Variables module.
 
 TODO: Examples
