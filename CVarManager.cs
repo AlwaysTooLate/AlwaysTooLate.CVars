@@ -335,6 +335,8 @@ namespace AlwaysTooLate.CVars
 
         public event OnVariableChanged VariableChanged;
 
+        public IReadOnlyDictionary<string, ConfigVariable> AllVariables => ConfigVariables;
+
         public static bool IsServer { get; set; } = false;
 
         public static string ConfigDirectory { get; set; } = "Config";
