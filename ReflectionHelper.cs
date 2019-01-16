@@ -30,7 +30,7 @@ namespace AlwaysTooLate.CVars
             var types = baseType.GetNestedTypes();
             foreach (var type in types)
             {
-                if (type.GetCustomAttributes(false).Any(attribute => attribute is TAttribute))
+                if (type.CustomAttributes.Any(attribute => attribute is TAttribute))
                 {
                     configClasses.Add(type);
                 }
@@ -46,7 +46,7 @@ namespace AlwaysTooLate.CVars
             var configClasses = new List<Type>();
             foreach (var type in types)
             {
-                if (type.GetCustomAttributes(false).Any(attribute => attribute is TAttribute))
+                if (type.CustomAttributes.Any(attribute => attribute is TAttribute))
                 {
                     configClasses.Add(type);
                 }
