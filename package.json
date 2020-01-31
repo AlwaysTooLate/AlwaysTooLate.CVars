@@ -1,12 +1,11 @@
 {
-    "name": "AlwaysTooLate.CVars", 
+    "name": "com.alwaystoolate.cvars", 
+    "displayName": "AlwaysTooLate Config Variables",
+    "description": "AlwaysTooLate Config Variables module",
     "unity": "2018.3", 
-    "version": "1.0.0-preview", 
+    "version": "1.0.0", 
     "dependencies": {
-        "AlwaysTooLate.Core": "1.0"
-    }, 
-    "keywords": [
-        "AlwaysTooLate"
-    ], 
-    "description": "AlwaysTooLate Config Variables module"
+		"com.alwaystoolate.core": "1.0.0",
+		"com.alwaystoolate.commands": "1.0.0"
+	}
 }
