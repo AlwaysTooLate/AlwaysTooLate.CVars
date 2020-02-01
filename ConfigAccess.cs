@@ -6,6 +6,6 @@ namespace AlwaysTooLate.CVars
     {
         Any,
         Client,
-        Server,
+        Server
     }
 }

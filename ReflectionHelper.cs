@@ -24,17 +24,14 @@ namespace AlwaysTooLate.CVars
             return fields;
         }
 
-        internal static IEnumerable<Type> GetClassesWithAttributeSubtype<TAttribute>(Type baseType) where TAttribute : class
+        internal static IEnumerable<Type> GetClassesWithAttributeSubtype<TAttribute>(Type baseType)
+            where TAttribute : class
         {
             var configClasses = new List<Type>();
             var types = baseType.GetNestedTypes();
             foreach (var type in types)
-            {
                 if (type.GetCustomAttributes(typeof(TAttribute)).Any())
-                {
                     configClasses.Add(type);
-                }
-            }
 
             return configClasses;
         }
@@ -45,12 +42,8 @@ namespace AlwaysTooLate.CVars
 
             var configClasses = new List<Type>();
             foreach (var type in types)
-            {
                 if (type.GetCustomAttributes(typeof(TAttribute)).Any())
-                {
                     configClasses.Add(type);
-                }
-            }
 
             return configClasses;
         }

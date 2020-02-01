@@ -32,9 +32,9 @@ namespace AlwaysTooLate.CVars
 
     public class ConfigVariable
     {
-        private object _lastValue;
-        private object _groupInstance;
         private object _baseInstance;
+        private object _groupInstance;
+        private object _lastValue;
 
         public ConfigVariableAttribute Attribute { get; set; }
         public Type FileType { get; set; }

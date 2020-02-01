@@ -31,12 +31,8 @@ namespace AlwaysTooLate.CVars
 
     public class ConfigFile<TClass> : IConfigFile where TClass : new()
     {
-        public string GetSaveFile()
-        {
-            var attribute = typeof(TClass).GetCustomAttribute<ConfigFileAttribute>();
-            var configName = attribute.FileName;
-            return string.Format(CVarManager.ConfigFileFormat, configName);
-        }
+        [UsedImplicitly]
+        public static TClass Current { get; private set; }
 
         public void Save()
         {
@@ -48,9 +44,8 @@ namespace AlwaysTooLate.CVars
         {
             var fileName = GetSaveFile();
             Deserialize(fileName);
-
         }
-        
+
         public void Serialize(string file)
         {
             var json = JsonUtility.ToJson(this, true);
@@ -89,7 +84,7 @@ namespace AlwaysTooLate.CVars
                     continue;
                 }
 
-                var groupInstance = (ConfigGroup)groupInstanceField.GetValue(this);
+                var groupInstance = (ConfigGroup) groupInstanceField.GetValue(this);
 
                 if (groupInstance == null)
                 {
@@ -102,7 +97,11 @@ namespace AlwaysTooLate.CVars
             }
         }
 
-        [UsedImplicitly]
-        public static TClass Current { get; private set; }
+        public string GetSaveFile()
+        {
+            var attribute = typeof(TClass).GetCustomAttribute<ConfigFileAttribute>();
+            var configName = attribute.FileName;
+            return string.Format(CVarManager.ConfigFileFormat, configName);
+        }
     }
 }

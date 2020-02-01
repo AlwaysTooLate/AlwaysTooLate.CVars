@@ -30,10 +30,11 @@ namespace AlwaysTooLate.CVars
 
                 if (variableAttribute == null)
                 {
-                    Debug.LogError($"Could not find ConfigVariable attribute for '{configVariable.Name}' inside '{this}'.");
+                    Debug.LogError(
+                        $"Could not find ConfigVariable attribute for '{configVariable.Name}' inside '{this}'.");
                     continue;
                 }
-                
+
                 // Set default values
                 configVariable.SetValue(this, variableAttribute.DefaultValue);
             }

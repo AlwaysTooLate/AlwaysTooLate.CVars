@@ -14,14 +14,26 @@ namespace AlwaysTooLate.CVars
     public delegate void OnVariableChanged(string name, object value);
 
     /// <summary>
-    /// Config variable manager class.
-    /// Should be initialized on main (entry) scene.
+    ///     Config variable manager class.
+    ///     Should be initialized on main (entry) scene.
     /// </summary>
+    [DefaultExecutionOrder(-800)]
     public class CVarManager : BehaviourSingleton<CVarManager>
     {
-        private static readonly Dictionary<string, ConfigVariable> ConfigVariables = new Dictionary<string, ConfigVariable>();
-        private static readonly List<KeyValuePair<string, ConfigVariable>> ChangedVariables = new List<KeyValuePair<string, ConfigVariable>>(8);
+        private static readonly Dictionary<string, ConfigVariable> ConfigVariables =
+            new Dictionary<string, ConfigVariable>();
+
+        private static readonly List<KeyValuePair<string, ConfigVariable>> ChangedVariables =
+            new List<KeyValuePair<string, ConfigVariable>>(8);
+
         private static IVariableReplicator _variableReplicator;
+
+        public IReadOnlyDictionary<string, ConfigVariable> AllVariables => ConfigVariables;
+
+        public static bool IsServer { get; set; } = false;
+
+        public static string ConfigDirectory { get; set; } = "Config";
+        public static string ConfigFileFormat { get; set; } = string.Concat(ConfigDirectory, "/{0}.json");
 
         protected override void OnAwake()
         {
@@ -69,10 +81,8 @@ namespace AlwaysTooLate.CVars
 
                     // Run replicator if needed
                     if (variableClass.IsReplicated && IsServer)
-                    {
                         // Run replicator
                         _variableReplicator.OnVariableChanged(variableClass);
-                    }
 
                     // Run callbacks
                     OnVariableChanged(variable.Key, variableClass.GetValue());
@@ -114,7 +124,8 @@ namespace AlwaysTooLate.CVars
 
                     if (instanceProperty == null)
                     {
-                        Debug.LogError($"Couldn't find instance's Current property. {configName} config file is invalid!");
+                        Debug.LogError(
+                            $"Couldn't find instance's Current property. {configName} config file is invalid!");
                         continue;
                     }
 
@@ -133,7 +144,8 @@ namespace AlwaysTooLate.CVars
 
                     if (instanceProperty == null)
                     {
-                        Debug.LogError($"Couldn't find instance's Current property. {configName} config file is invalid!");
+                        Debug.LogError(
+                            $"Couldn't find instance's Current property. {configName} config file is invalid!");
                         continue;
                     }
 
@@ -217,7 +229,8 @@ namespace AlwaysTooLate.CVars
                 var configGroups = ReflectionHelper.GetClassesWithAttributeSubtype<ConfigGroupAttribute>(configClass);
 
                 if (configGroups.Any())
-                    Debug.LogWarning("ConfigClass cannot have config groups. They are only meant to be used with ConfigFiles.");
+                    Debug.LogWarning(
+                        "ConfigClass cannot have config groups. They are only meant to be used with ConfigFiles.");
 
                 var configVariables = ReflectionHelper.GetAllConfigVariables(configClass);
 
@@ -260,7 +273,8 @@ namespace AlwaysTooLate.CVars
 
             var timeEnd = Time.realtimeSinceStartup;
 
-            Debug.Log($"Loaded in total {ConfigVariables.Count} config variables. Loaded in {(timeEnd - timeStart) * 1000.0f:f2}ms.");
+            Debug.Log(
+                $"Loaded in total {ConfigVariables.Count} config variables. Loaded in {(timeEnd - timeStart) * 1000.0f:f2}ms.");
         }
 
         protected virtual void OnVariableChanged(string s, object value)
@@ -269,8 +283,8 @@ namespace AlwaysTooLate.CVars
         }
 
         /// <summary>
-        /// Gets variable by name.
-        /// If variable doesn't exists, this function returns null.
+        ///     Gets variable by name.
+        ///     If variable doesn't exists, this function returns null.
         /// </summary>
         /// <param name="name">The variable full name, eg.: cheats.fly</param>
         /// <returns>The variable wrapper class.</returns>
@@ -280,7 +294,7 @@ namespace AlwaysTooLate.CVars
         }
 
         /// <summary>
-        /// Sets variable by name.
+        ///     Sets variable by name.
         /// </summary>
         /// <param name="name">The variable full name, eg.: cheats.fly</param>
         /// <param name="value">The new variable value. Make sure that it is the proper type.</param>
@@ -290,7 +304,7 @@ namespace AlwaysTooLate.CVars
         }
 
         /// <summary>
-        /// Gets all config files.
+        ///     Gets all config files.
         /// </summary>
         /// <returns>The config file.</returns>
         public static IEnumerable<IConfigFile> GetConfigFiles()
@@ -308,38 +322,29 @@ namespace AlwaysTooLate.CVars
         }
 
         /// <summary>
-        /// Saves all config files.
+        ///     Saves all config files.
         /// </summary>
         public static void SaveAll()
         {
             // Save all config files
-            foreach (var configFile in GetConfigFiles())
-            {
-                configFile.Save();
-            }
+            foreach (var configFile in GetConfigFiles()) configFile.Save();
         }
 
         /// <summary>
-        /// Sets config variable replicator.
+        ///     Sets config variable replicator.
         /// </summary>
         /// <param name="replicator">The replicator instance.</param>
         /// <remarks>
-        /// Can be used only on server.
+        ///     Can be used only on server.
         /// </remarks>
         public static void SetVariableReplicator(IVariableReplicator replicator)
         {
-            Debug.Assert(IsServer, "Only server can get variable replicator. As server only has the power, to replicate the wor... variables.");
+            Debug.Assert(IsServer,
+                "Only server can get variable replicator. As server only has the power, to replicate the wor... variables.");
 
             _variableReplicator = replicator;
         }
 
         public event OnVariableChanged VariableChanged;
-
-        public IReadOnlyDictionary<string, ConfigVariable> AllVariables => ConfigVariables;
-
-        public static bool IsServer { get; set; } = false;
-
-        public static string ConfigDirectory { get; set; } = "Config";
-        public static string ConfigFileFormat { get; set; } = string.Concat(ConfigDirectory, "/{0}.json");
     }
 }
