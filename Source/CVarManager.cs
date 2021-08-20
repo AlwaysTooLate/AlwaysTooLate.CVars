@@ -35,6 +35,9 @@ namespace AlwaysTooLate.CVars
         public static string ConfigDirectory { get; set; } = "Config";
         public static string ConfigFileFormat { get; set; } = string.Concat(ConfigDirectory, "/{0}.json");
 
+        [SerializeField]
+        private bool _enableConfigFiles = false;
+
         protected override void OnAwake()
         {
             Debug.Log("Looking for config variables...");
@@ -99,8 +102,8 @@ namespace AlwaysTooLate.CVars
 
             // WARNING: Close your eyes, there is a shitload of reflection.
 
-            if (!Directory.Exists("Config"))
-                Directory.CreateDirectory("Config");
+            if (_enableConfigFiles && !Directory.Exists(ConfigDirectory))
+                Directory.CreateDirectory(ConfigDirectory);
 
             // Find all ConfigFiles and ConfigClasses
             var configFiles = ReflectionHelper.GetClassesWithAttribute<ConfigFileAttribute>().ToArray();
@@ -116,7 +119,7 @@ namespace AlwaysTooLate.CVars
                 var fileName = string.Format(ConfigFileFormat, configName);
 
                 IConfigFile instance;
-                if (File.Exists(fileName))
+                if (_enableConfigFiles && File.Exists(fileName))
                 {
                     // Create class instance.
                     instance = Activator.CreateInstance(configFile) as IConfigFile;
@@ -326,6 +329,8 @@ namespace AlwaysTooLate.CVars
         /// </summary>
         public static void SaveAll()
         {
+            if (!Instance._enableConfigFiles) return;
+        
             // Save all config files
             foreach (var configFile in GetConfigFiles()) configFile.Save();
         }
