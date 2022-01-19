@@ -1,4 +1,4 @@
-﻿// AlwaysTooLate.CVars (c) 2018-2019 Always Too Late.
+﻿// AlwaysTooLate.CVars (c) 2018-2022 Always Too Late.
 
 using System;
 using System.IO;
